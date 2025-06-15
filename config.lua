@@ -1,4 +1,26 @@
 Config = {}
+Config.System = {
+    trigger = 'qb-vehiclekeys',
+    core = 'qb-core',
+    inventory = 'qb-inventory',
+    weapons = 'qb-weapons',
+    input = 'ox_lib',
+    InSideMinigame = {
+        export = 't3_lockpick',
+        configuration = {
+            isAdvanced = {3, 7, 5},
+            isNormal = {1, 4, 9}
+        }
+    },
+    OutSideMinigame = {
+        isWindowUnBreakable = true,
+        export = 'boii_minigames',
+        configuration = {
+            isAdvanced = {style = 'default', icon = 'fa-solid fa-paw', area_size = 4, speed = 0.02,},
+            isNormal = {style = 'default', icon = 'fa-solid fa-paw', area_size = 6, speed = 0.06,},
+        }
+    }
+}
 
 -- Key System Settings
 Config.PersistentKeys = true -- Whether keys received should be saved after server restart, or not
@@ -16,7 +38,7 @@ Config.LockToggleSound = "lock"
 Config.LockToggleDist = 8.0
 
 -- NPC Vehicle Lock States
-Config.LockNPCDrivingCars = true -- Lock state for NPC cars being driven by NPCs [true = locked, false = unlocked]
+Config.LockNPCDrivingCars = false -- Lock state for NPC cars being driven by NPCs [true = locked, false = unlocked]
 Config.LockNPCParkedCars = true -- Lock state for NPC parked cars [true = locked, false = unlocked]
 Config.UseKeyfob = false -- you can set this true if you dont need ui
 -- Lockpick Settings

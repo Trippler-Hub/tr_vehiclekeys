@@ -1,10 +1,55 @@
-# qb-vehiclekeys
-Vehicle Keys System For QB-Core
+# vehiclekeys
+Vehicle Keys System Forked From QBFX
 
-# Vehicle Key NUI Preview
-[[Preview Here]](https://www.youtube.com/watch?v=7E9TXR3lXPI)
+```lua
+Config.System = {
+    trigger = GetCurrentResourceName(), ---@param Trigger name for the other resources to [trigger] form current resource | don't change unless you know what you are doing
+    core = 'qb-core', ---@param Core name for the server to listen to
+    inventory = 'qb-inventory', ---@param Inventory name for the server to listen to
+    weapons = 'qb-weapons', ---@param Weapons name for the server to listen to
+    input = 'ox_lib', ---@param support ox_lib | qb-input
+    OutSideMinigame = {
+        isWindowUnBreakable = true, --@function set to false if you want player to break the window to get in vehicle (this will bypass the outside vehicle minigame if set to false)
+        export = 'karma-repairskill', ---@export the third party lockpick UI
+        configuration = {
+            isAdvanced = {40}, ---@param the_difficulty_paramater_if_player_has ADVANCEDLOCKPICK
+            isNormal = {20} ---@param the_difficulty_paramater_if_player_has LOCKPICK
+        }
+    },
+    InSideMinigame = {
+        export = 't3_lockpick',
+        configuration = {
+            isAdvanced = {1, 4, 5},
+            isNormal = {3, 7, 9}
+        }
+    }
+}
 
+--[[
+---@param Template MUST SETUP THE CLIENT/FUNCTION.LUA
+    export = lib, https://github.com/overextended/ox_lib
+    difficulty = {'easy', 'easy', {areaSize = 60, speedMultiplier = 2}, 'hard'}, {'w', 'a', 's', 'd'}
 
+---@param Template MUST SETUP THE CLIENT/FUNCTION.LUA
+    export = 'qb-minigames', https://github.com/qbcore-framework/qb-minigames
+    difficulty = isAdvanced and 'easy' or 'medium'
+
+---@param Template MUST SETUP THE CLIENT/FUNCTION.LUA
+    difficulty = {"Lockpick", 2, 30}
+
+---@param Template MUST SETUP THE CLIENT/FUNCTION.LUA
+    export = '2na_lockpick',
+    difficulty = {3, 1}
+
+---@param Template ALREADY CONFIGURED ;)
+    export = 't3_lockpick', https://github.com/T3development/t3_lockpick
+    difficulty = isAdvanced and {1, 4, 5} or {3, 7, 9}
+]]
+```
+
+#TODO: 
+    - Add a realistic animation when lockpicking the outside door
+    - Add the latest supported dispatch alerts
 # License
 
     QBCore Framework

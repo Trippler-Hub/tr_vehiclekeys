@@ -1,7 +1,7 @@
 -----------------------
 ----   Variables   ----
 -----------------------
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports[]:GetCoreObject()
 local VehicleList = {}
 
 -----------------------
@@ -14,7 +14,7 @@ local VehicleList = {}
 
 -- Event to give keys. receiver can either be a single id, or a table of ids.
 -- Must already have keys to the vehicle, trigger the event from the server, or pass forcegive paramter as true.
-RegisterNetEvent('qb-vehiclekeys:server:GiveVehicleKeys', function(receiver, plate)
+RegisterNetEvent('Config.System.trigger .. ':server:GiveVehicleKeys', function(receiver, plate)
     local giver = source
 
     if HasKeys(giver, plate) then
@@ -31,25 +31,29 @@ RegisterNetEvent('qb-vehiclekeys:server:GiveVehicleKeys', function(receiver, pla
     end
 end)
 
-RegisterNetEvent('qb-vehiclekeys:server:AcquireVehicleKeys', function(plate)
+RegisterNetEvent('Config.System.trigger .. ':server:AcquireVehicleKeys', function(plate)
     local src = source
     GiveKeys(src, plate)
 end)
 
-RegisterNetEvent('qb-vehiclekeys:server:breakLockpick', function(itemName)
+RegisterNetEvent('Config.System.trigger .. ':server:breakLockpick', function(itemName)
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player then return end
     if not (itemName == 'lockpick' or itemName == 'advancedlockpick') then return end
-    if exports['qb-inventory']:RemoveItem(source, itemName, 1, false, 'qb-vehiclekeys:server:breakLockpick') then
+    if exports['qb-inventory']:RemoveItem(source, itemName, 1, false, 'Config.System.trigger .. ':server:breakLockpick') then
         TriggerClientEvent('qb-inventory:client:ItemBox', source, QBCore.Shared.Items[itemName], 'remove')
     end
 end)
 
-RegisterNetEvent('qb-vehiclekeys:server:setVehLockState', function(vehNetId, state)
-    SetVehicleDoorsLocked(NetworkGetEntityFromNetworkId(vehNetId), state)
+RegisterNetEvent('Config.System.trigger .. ':server:setVehLockState', function(vehNetId, state)
+    if Config.System.OutSideMinigame.isWindowUnBreakable then
+        SetVehicleDoorsLocked(NetworkGetEntityFromNetworkId(vehNetId), state)
+    else
+        SetVehicleDoorsLocked(NetworkGetEntityFromNetworkId(vehNetId), 7)
+    end
 end)
 
-QBCore.Functions.CreateCallback('qb-vehiclekeys:server:GetVehicleKeys', function(source, cb)
+QBCore.Functions.CreateCallback('Config.System.trigger .. ':server:GetVehicleKeys', function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player then return cb({}) end
     local citizenid = Player.PlayerData.citizenid
@@ -67,7 +71,7 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:GetVehicleKeys', function
     cb(keysList)
 end)
 
-QBCore.Functions.CreateCallback('qb-vehiclekeys:server:checkPlayerOwned', function(_, cb, plate)
+QBCore.Functions.CreateCallback('Config.System.trigger .. ':server:checkPlayerOwned', function(_, cb, plate)
     local playerOwned = false
     if VehicleList[plate] then
         playerOwned = true
@@ -100,7 +104,7 @@ function GiveKeys(id, plate)
     Player.Functions.SetMetaData("vehicleKeys", oldKeys)
 
     TriggerClientEvent('QBCore:Notify', id, Lang:t('notify.vgetkeys'))
-    TriggerClientEvent('qb-vehiclekeys:client:AddKeys', id, plate)
+    TriggerClientEvent('Config.System.trigger .. ':client:AddKeys', id, plate)
 end
 
 exports('GiveKeys', GiveKeys)
@@ -118,7 +122,7 @@ function RemoveKeys(id, plate)
     oldKeys[plate] = nil
     Player.Functions.SetMetaData("vehicleKeys", oldKeys)
 
-    TriggerClientEvent('qb-vehiclekeys:client:RemoveKeys', id, plate)
+    TriggerClientEvent('Config.System.trigger .. ':client:RemoveKeys', id, plate)
 end
 
 exports('RemoveKeys', RemoveKeys)
@@ -143,7 +147,7 @@ exports('HasKeys', HasKeys)
 
 QBCore.Commands.Add('givekeys', Lang:t('addcom.givekeys'), { { name = Lang:t('addcom.givekeys_id'), help = Lang:t('addcom.givekeys_id_help') } }, false, function(source, args)
     local src = source
-    TriggerClientEvent('qb-vehiclekeys:client:GiveKeys', src, tonumber(args[1]))
+    TriggerClientEvent('Config.System.trigger .. ':client:GiveKeys', src, tonumber(args[1]))
 end)
 
 QBCore.Commands.Add('addkeys', Lang:t('addcom.addkeys'), { { name = Lang:t('addcom.addkeys_id'), help = Lang:t('addcom.addkeys_id_help') }, { name = Lang:t('addcom.addkeys_plate'), help = Lang:t('addcom.addkeys_plate_help') } }, true, function(source, args)
