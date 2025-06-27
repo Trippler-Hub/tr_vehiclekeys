@@ -50,6 +50,7 @@ Config.System = {
 #TODO: 
     - Add a realistic animation when lockpicking the outside door
     - Add the latest supported dispatch alerts
+    - Add the server:removekeys
 # License
 
     QBCore Framework
